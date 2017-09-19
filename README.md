@@ -1,8 +1,9 @@
-# COMP1720 template
+# COMP1720 major project template
 
-Here's the **javascript** template for making p5 sketches for COMP1720. If
-you've used Processing before, the p5 function names and general worldview will
-be really similar.
+This is the big one! Make sure you read the assignment page carefully, and if
+you have questions then ask for help **early** on Piazza.
+
+<https://cs.anu.edu.au/courses/comp1720/assignments/05-major-project/>
 
 ## Setup
 
@@ -26,6 +27,10 @@ be really similar.
 
 4. every time you save the `sketch.js` file, the live server will auto-update
    the sketch in Chrome
+
+5. if you add new files (e.g. new `.js` files or new assets into the `assets/`
+   folder) then make sure you add them to the repo (see `assets/README.md` for
+   instructions)
 
 ### Notes
 
