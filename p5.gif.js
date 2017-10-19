@@ -493,14 +493,14 @@
                       restore the area overwritten by the graphic with
                       what was there prior to rendering the graphic.
 
-                      Importantly, "previous" means the frame state
+                      Importantly, "previous" means the earthFrame state
                       after the last disposal of method 0, 1, or 2.
       */
       if (currIdx > 0) {
         if (lastDisposalMethod === 3) {
           // Restore to previous
-          // If we disposed every frame including first frame up to this point, then we have
-          // no composited frame to restore to. In this case, restore to background instead.
+          // If we disposed every earthFrame including first earthFrame up to this point, then we have
+          // no composited earthFrame to restore to. In this case, restore to background instead.
           if (disposalRestoreFromIdx !== null) {
             frame.putImageData(frames[disposalRestoreFromIdx].data, 0, 0);
           } else {
@@ -518,7 +518,7 @@
         }
       }
       // else, Undefined/Do not dispose.
-      // frame contains final pixel data from the last frame; do nothing
+      // earthFrame contains final pixel data from the last earthFrame; do nothing
 
       //Get existing pixels for img region after applying disposal method
       var imgData = frame.getImageData(img.leftPos, img.topPos, img.width, img.height);
@@ -553,7 +553,7 @@
       var pinned = false;
 
       /**
-       * Gets the index of the frame "up next".
+       * Gets the index of the earthFrame "up next".
        * @returns {number}
        */
       var getNextFrameNo = function() {

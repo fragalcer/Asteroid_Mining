@@ -1,23 +1,31 @@
 var earthGif;
+var moonGif;
 var music;
 var fadingValueForEarth = 0;
 var earthXPos;
 var earthYPos;
 var currentMouseXPos;
-var currentFrame;
+var currentEarthFrame;
 var nextMouseXPos;
-var frame;
+var earthFrame;
 var stars = [];
 var enoughStarsAlready = false;
 var userIsMovingLeft = false;
 var userIsMovingRight = false;
 var widthOfTheUniverse;
+var sunImage;
+var theSunIsNotCreated = true;
+var theSun;
+var theMoonIsNotCreated = true;
+var theMoon;
 
 
 
 function preload() {
     earthGif = loadGif('earth.gif');
+    moonGif = loadGif('moon.gif');
     music = loadSound('blue_fields.mp3');
+    sunImage = loadImage('sun_2.png');
 }
 
 function setup() {
@@ -26,7 +34,6 @@ function setup() {
     earthXPos = windowWidth;
     widthOfTheUniverse = windowWidth;
     earthYPos = windowHeight;
-    // any additional setup code goes here
 }
 
 function draw() {
@@ -54,8 +61,20 @@ function draw() {
             stars[a].moveLeft();
         }
     }
-    userIsMovingLeft = false;
-    userIsMovingRight = false;
+
+    if (theSunIsNotCreated) {
+        theSun = new Sun(windowWidth / 2 - 300);
+        theSunIsNotCreated = false;
+    }
+
+    theSun.show();
+
+    // Recycle the sun.
+    if (theSun.getX() > 8000) {
+        theSun.x = -500;
+    } else if (theSun.getX() < -8000) {
+        theSun.x = windowWidth + 500;
+    }
 
     // Move x value of the stars to save memory ('recycle' the stars).
     for (var a = 0; a < stars.length; a++) {
@@ -67,10 +86,38 @@ function draw() {
         }
     }
 
+    if (frameCount % 300 === 0) {
+        starsGenerator(1);
+    }
+
+    if (theMoonIsNotCreated) {
+        theMoon = new Moon(windowWidth / 2 - 500);
+        theMoonIsNotCreated = false;
+    }
+
+    theMoon.show();
+
+    if (userIsMovingRight) {
+        theSun.moveRight();
+        theMoon.moveRight();
+    }
+    if (userIsMovingLeft) {
+        theSun.moveLeft();
+        theMoon.moveLeft();
+    }
+
+    userIsMovingLeft = false;
+    userIsMovingRight = false;
+
+
+    if (moonGif.loaded()) {
+        moonGif.pause();
+        currentMoonFrame = moonGif.frame();
+    }
+
     if (earthGif.loaded()) {
         earthGif.pause();
-        currentFrame = earthGif.frame();
-        // currentMouseXPos = mouseX;
+        currentEarthFrame = earthGif.frame();
         tint(255, fadingValueForEarth);
         image(earthGif, earthXPos, windowHeight / 2 - earthGif.height / 2);
     }
@@ -83,11 +130,7 @@ function draw() {
 
     if (earthXPos > (windowWidth / 2 - earthGif.width / 2) && earthGif.loaded()) {
         earthXPos -= 2;
-        // earthGif.play();
-    } else {
-        // earthGif.pause();
     }
-
 }
 
 function mouseMoved() {
@@ -98,8 +141,8 @@ function mouseMoved() {
 
         // left movement.
         if (nextMouseXPos < currentMouseXPos) {
-            frame = currentFrame + 1;
-            earthGif.frame(frame);
+            earthFrame = currentEarthFrame + 1;
+            earthGif.frame(earthFrame);
             currentMouseXPos = nextMouseXPos;
             userIsMovingLeft = true;
             userIsMovingRight = false;
@@ -107,16 +150,23 @@ function mouseMoved() {
 
         // right movement.
         else if (nextMouseXPos > currentMouseXPos) {
-            if (currentFrame === 0 && frame === -1) {
-                currentFrame = 99;
-                frame = 100;
+            if (currentEarthFrame === 0 && earthFrame === -1) {
+                currentEarthFrame = 99;
+                earthFrame = 100;
             }
-            frame = currentFrame - 1;
-            earthGif.frame(frame);
+            earthFrame = currentEarthFrame - 1;
+            earthGif.frame(earthFrame);
             currentMouseXPos = nextMouseXPos;
             userIsMovingRight = true;
             userIsMovingLeft = false;
         }
+    }
+}
+
+function starsGenerator(numberOfAsteroids) {
+    for (var a = 0; a < numberOfAsteroids; a++) {
+        var asteroid = new Star(random(widthOfTheUniverse * -3, widthOfTheUniverse * 2), random(0, windowHeight), random(4,10), random(1,2), random(8,10));
+        stars.push(asteroid);
     }
 }
 
@@ -133,6 +183,50 @@ function Star(x, y, r1, r2, p) {
         fill('#f6fce9');
         starMaker(this.x, this.y, this.r1, this.r2, this.p);
         pop();
+    };
+
+    this.moveLeft = function () {
+        this.x += this.velocity;
+    };
+
+    this.moveRight = function () {
+        this.x -= this.velocity;
+    };
+
+    this.getX = function () {
+        return this.x;
+    };
+}
+
+function Sun(x) {
+    this.x = x;
+    this.velocity = 100;
+
+    this.show = function () {
+        push();
+        image(sunImage, this.x, 250);
+        sunImage.resize(150, 150);
+        pop();
+    };
+
+    this.moveLeft = function () {
+        this.x += this.velocity;
+    };
+
+    this.moveRight = function () {
+        this.x -= this.velocity;
+    };
+
+    this.getX = function () {
+        return this.x;
+    };
+
+}function Moon(x) {
+    this.x = x;
+    this.velocity = 80;
+
+    this.show = function () {
+        image(moonGif, this.x, 225);
     };
 
     this.moveLeft = function () {
