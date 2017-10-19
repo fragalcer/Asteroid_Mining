@@ -67,11 +67,6 @@ function draw() {
         }
     }
 
-    if (frameCount % 300 === 0) {
-        starsGenerator(1);
-        // print("i am doing the thing")
-    }
-
     if (earthGif.loaded()) {
         earthGif.pause();
         currentFrame = earthGif.frame();
@@ -122,17 +117,6 @@ function mouseMoved() {
             userIsMovingRight = true;
             userIsMovingLeft = false;
         }
-            // userIsMovingRight = false;
-            // userIsMovingLeft = false;
-
-
-    }
-}
-
-function starsGenerator(numberOfAsteroids) {
-    for (var a = 0; a < numberOfAsteroids; a++) {
-        var asteroid = new Star(random(widthOfTheUniverse * -3, widthOfTheUniverse * 2), random(0, windowHeight), random(4,10), random(1,2), random(8,10));
-        stars.push(asteroid);
     }
 }
 
