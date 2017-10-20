@@ -1,11 +1,11 @@
 var earthGif;
-var moonGif;
 var music;
 var fadingValueForEarth = 0;
 var earthXPos;
 var earthYPos;
 var currentMouseXPos;
 var currentEarthFrame;
+var currentMoonFrame;
 var nextMouseXPos;
 var earthFrame;
 var stars = [];
@@ -14,6 +14,7 @@ var userIsMovingLeft = false;
 var userIsMovingRight = false;
 var widthOfTheUniverse;
 var sunImage;
+var moonImage;
 var theSunIsNotCreated = true;
 var theSun;
 var theMoonIsNotCreated = true;
@@ -23,9 +24,9 @@ var theMoon;
 
 function preload() {
     earthGif = loadGif('earth.gif');
-    moonGif = loadGif('moon.gif');
     music = loadSound('blue_fields.mp3');
-    sunImage = loadImage('sun_2.png');
+    sunImage = loadImage('sun.png');
+    moonImage = loadImage('moon.png');
 }
 
 function setup() {
@@ -69,7 +70,7 @@ function draw() {
 
     theSun.show();
 
-    // Recycle the sun.
+    // Recycle the sun X position.
     if (theSun.getX() > 8000) {
         theSun.x = -500;
     } else if (theSun.getX() < -8000) {
@@ -91,9 +92,27 @@ function draw() {
     }
 
     if (theMoonIsNotCreated) {
-        theMoon = new Moon(windowWidth / 2 - 500);
+        theMoon = new Moon(windowWidth);
         theMoonIsNotCreated = false;
     }
+
+    // Recycle the moon X position.
+    if (theMoon.getX() > 5500) {
+        theMoon.x = -500;
+    } else if (theMoon.getX() < -5000) {
+        theMoon.x = windowWidth + 500;
+    }
+
+    // // Recycle the sun and the moon.
+    // if (theMoon.getX() > 7000 && theSun.getX() > 7000) {
+    //     theMoon.x = -300;
+    //     theSun.x = (-windowWidth / 2) - 1020;
+    //     print("the moon x " + theMoon.x);
+    //     print("the sun x " + theSun.x);
+    // }else if (theMoon.getX() < -7000 && theSun.getX() < -7000) {
+    //     theSun.x = windowWidth;
+    //     theMoon.x = windowWidth + 1469 - theSun.width;
+    // }
 
     theMoon.show();
 
@@ -108,12 +127,6 @@ function draw() {
 
     userIsMovingLeft = false;
     userIsMovingRight = false;
-
-
-    if (moonGif.loaded()) {
-        moonGif.pause();
-        currentMoonFrame = moonGif.frame();
-    }
 
     if (earthGif.loaded()) {
         earthGif.pause();
@@ -203,10 +216,10 @@ function Sun(x) {
     this.velocity = 100;
 
     this.show = function () {
-        push();
+        // push();
         image(sunImage, this.x, 250);
-        sunImage.resize(150, 150);
-        pop();
+        // sunImage.resize(275, 275);
+        // pop();
     };
 
     this.moveLeft = function () {
@@ -223,10 +236,10 @@ function Sun(x) {
 
 }function Moon(x) {
     this.x = x;
-    this.velocity = 80;
+    this.velocity = 70;
 
     this.show = function () {
-        image(moonGif, this.x, 225);
+        image(moonImage, this.x, 225);
     };
 
     this.moveLeft = function () {
