@@ -1,13 +1,16 @@
 var earthGif;
+var theEarth;
 var music;
 var voice1;
 var fadingValueForEarth = 0;
+var fadingValueForSecondScene = 0;
 var earthXPos;
 var earthYPos;
 var currentMouseXPos;
 var currentEarthFrame;
 var nextMouseXPos;
 var earthFrame;
+var theEarthIsNotCreated = true;
 var stars = [];
 var enoughStarsAlready = false;
 var userIsMovingLeft = false;
@@ -35,6 +38,33 @@ var marsIsNotCreated = true;
 var thePlanetMars;
 var jupiterFrame;
 var marsFrame;
+var asteroid1;
+var asteroid2;
+var asteroid3;
+var asteroid4;
+var asteroid5;
+var asteroid6;
+var asteroid1xs;
+var asteroid2xs;
+var asteroid3xs;
+var asteroid4xs;
+var asteroid5xs;
+var asteroid6xs;
+var asteroid1xs2;
+var asteroid2xs2;
+var asteroid3xs2;
+var asteroid4xs2;
+var asteroid5xs2;
+var asteroid6xs2;
+var asteroid1xs3;
+var asteroid2xs3;
+var asteroid3xs3;
+var asteroid4xs3;
+var asteroid5xs3;
+var asteroid6xs3;
+var possibleAsteroids = [];
+var asteroids = [];
+var enoughAsteroidsAlready = false;
 
 
 
@@ -47,7 +77,55 @@ function preload() {
     bleepSound = loadSound('bleep_sound.mp3');
     buttonPressedSound = loadSound('button_pressed.mp3')
     marsGif = loadGif('mars.gif');
-    jupiterGif = loadGif('jupiter_reversed_medium.gif');
+    jupiterGif = loadGif('jupiter_reversed_small.gif');
+    asteroid1 = loadGif('asteroid_1_small.gif');
+    asteroid2 = loadGif('asteroid_2_small.gif');
+    asteroid3 = loadGif('asteroid_3_small.gif');
+    asteroid4 = loadGif('asteroid_4_small.gif');
+    asteroid5 = loadGif('asteroid_5_small.gif');
+    asteroid6 = loadGif('asteroid_6_small.gif');
+    asteroid1xs = loadGif('asteroid_1_extrasmall.gif');
+    asteroid2xs = loadGif('asteroid_2_extrasmall.gif');
+    asteroid3xs = loadGif('asteroid_3_extrasmall.gif');
+    asteroid4xs = loadGif('asteroid_4_extrasmall.gif');
+    asteroid5xs = loadGif('asteroid_5_extrasmall.gif');
+    asteroid6xs = loadGif('asteroid_6_extrasmall.gif');
+    asteroid1xs2 = loadGif('asteroid_1_extrasmall_2.gif');
+    asteroid2xs2 = loadGif('asteroid_2_extrasmall_2.gif');
+    asteroid3xs2 = loadGif('asteroid_3_extrasmall_2.gif');
+    asteroid4xs2 = loadGif('asteroid_4_extrasmall_2.gif');
+    asteroid5xs2 = loadGif('asteroid_5_extrasmall_2.gif');
+    asteroid6xs2 = loadGif('asteroid_6_extrasmall_2.gif');
+    asteroid1xs3 = loadGif('asteroid_1_extrasmall_3.gif');
+    asteroid2xs3 = loadGif('asteroid_2_extrasmall_3.gif');
+    asteroid3xs3 = loadGif('asteroid_3_extrasmall_3.gif');
+    asteroid4xs3 = loadGif('asteroid_4_extrasmall_3.gif');
+    asteroid5xs3 = loadGif('asteroid_5_extrasmall_3.gif');
+    asteroid6xs3 = loadGif('asteroid_6_extrasmall_3.gif');
+    possibleAsteroids.push(asteroid1);
+    possibleAsteroids.push(asteroid2);
+    possibleAsteroids.push(asteroid3);
+    possibleAsteroids.push(asteroid4);
+    possibleAsteroids.push(asteroid5);
+    possibleAsteroids.push(asteroid6);
+    possibleAsteroids.push(asteroid1xs);
+    possibleAsteroids.push(asteroid2xs);
+    possibleAsteroids.push(asteroid3xs);
+    possibleAsteroids.push(asteroid4xs);
+    possibleAsteroids.push(asteroid5xs);
+    possibleAsteroids.push(asteroid6xs);
+    possibleAsteroids.push(asteroid1xs2);
+    possibleAsteroids.push(asteroid2xs2);
+    possibleAsteroids.push(asteroid3xs2);
+    possibleAsteroids.push(asteroid4xs2);
+    possibleAsteroids.push(asteroid5xs2);
+    possibleAsteroids.push(asteroid6xs2);
+    possibleAsteroids.push(asteroid1xs3);
+    possibleAsteroids.push(asteroid2xs3);
+    possibleAsteroids.push(asteroid3xs3);
+    possibleAsteroids.push(asteroid4xs3);
+    possibleAsteroids.push(asteroid5xs3);
+    possibleAsteroids.push(asteroid6xs3);
 
 }
 
@@ -154,6 +232,17 @@ function draw() {
             cursor(ARROW);
         }
 
+        if (theEarthIsNotCreated) {
+            theEarth = new Earth(windowWidth, windowHeight / 2 - earthGif.height / 2);
+            theEarthIsNotCreated = false;
+        }
+
+        push();
+        currentEarthFrame = theEarth.getFrame();
+        tint(255, fadingValueForEarth);
+        theEarth.show();
+        pop();
+
         if (userIsMovingRight) {
             theSun.moveRight();
             theMoon.moveRight();
@@ -169,58 +258,104 @@ function draw() {
         userIsMovingRight = false;
 
         if (earthGif.loaded()) {
-            earthGif.pause();
             if (voiceOneHasNotBeenPlayed) {
                 voice1.play();
                 voiceOneHasNotBeenPlayed = false;
             }
-            push();
-            currentEarthFrame = earthGif.frame();
-            tint(255, fadingValueForEarth);
-            image(earthGif, earthXPos, windowHeight / 2 - earthGif.height / 2);
-            pop();
-        }
-
-        if (fadingValueForEarth <= 255) {
-            if (frameCount % 5 === 0) {
-                fadingValueForEarth += 4;
+            if (fadingValueForEarth <= 255) {
+                if (frameCount % 5 === 0) {
+                    fadingValueForEarth += 4;
+                }
             }
         }
 
-        if (earthXPos > (windowWidth / 2 - earthGif.width / 2) && earthGif.loaded()) {
-            earthXPos -= 2;
+
+        if (theEarth.getX() > (windowWidth / 2 - earthGif.width / 2) && earthGif.loaded()) {
+            theEarth.setX(-2);
         }
+
     } else if (secondScene) {
+
+        push();
+
+        if (!enoughAsteroidsAlready) {
+            for (var s = 0; s <= 100; s++) {
+                var asteroid = new Asteroid(random(-500, windowWidth + 500), random(100, windowHeight - 200));
+                asteroids.push(asteroid);
+                if (s === 100) {
+                    enoughAsteroidsAlready = true;
+                }
+            }
+        }
+
+        cursor(ARROW);
 
         if (jupiterIsNotCreated) {
             if (jupiterGif.loaded()) {
-                thePlanetJupiter = new Jupiter((windowWidth / 2) - (jupiterGif.width / 2));
+                // thePlanetJupiter = new Jupiter((windowWidth / 2) - (jupiterGif.width / 2));
+                thePlanetJupiter = new Jupiter(50);
                 jupiterIsNotCreated = false;
             }
         }
-
+        tint(255, fadingValueForSecondScene);
         thePlanetJupiter.show();
 
         if (marsIsNotCreated) {
             if (marsGif.loaded()) {
-                thePlanetMars = new Mars((windowWidth / 2) - (marsGif.width / 2));
+                thePlanetMars = new Mars((windowWidth / 2 * 1.5) - (marsGif.width / 2));
                 marsIsNotCreated = false;
             }
         }
 
+        for (var a = 0; a < asteroids.length; a++) {
+            tint(255, fadingValueForSecondScene);
+            tint(255, fadingValueForSecondScene);
+            asteroids[a].show();
+            asteroids[a].move();
+        }
+
+        tint(255, fadingValueForSecondScene);
         thePlanetMars.show();
+
+        // if (frameCount % 5 === 0) {
+        //     asteroidGenerator(random(-1, 1));
+        // }
 
         if (userIsMovingRight) {
             thePlanetMars.moveRight();
-            thePlanetJupiter.moveRight();
+            // thePlanetJupiter.moveRight();
+            for (var a = 0; a < asteroids.length; a++) {
+                asteroids[a].moveRight();
+            }
         }
         if (userIsMovingLeft) {
             thePlanetMars.moveLeft();
-            thePlanetJupiter.moveLeft();
+            // thePlanetJupiter.moveLeft();
+            for (var a = 0; a < asteroids.length; a++) {
+                asteroids[a].moveLeft();
+            }
         }
 
         userIsMovingLeft = false;
         userIsMovingRight = false;
+
+        // Move x value of the asteroids to save memory ('recycle' the asteroids).
+        for (var a = 0; a < asteroids.length; a++) {
+            if (asteroids[a].getX() > windowWidth + 500) {
+                // asteroids.splice(a, 1);
+                asteroids[a].x = random(-500, 0);
+            } else if (asteroids[a].getX() < - 500) {
+                asteroids[a].x = random(windowWidth, windowWidth + 500);
+            }
+        }
+
+        if (fadingValueForSecondScene <= 255) {
+            if (frameCount % 5 === 0) {
+                fadingValueForSecondScene += 8;
+            }
+        }
+
+        pop();
 
     }
 
@@ -234,8 +369,8 @@ function mouseMoved() {
     if (earthGif.loaded()) {
 
         // left movement.
-        if (nextMouseXPos < currentMouseXPos) {
-            if (earthGif.loaded()) {
+        if (nextMouseXPos > currentMouseXPos) {
+            if (earthGif.loaded() && !theEarthIsNotCreated) {
                 earthFrame = currentEarthFrame + 1;
                 earthGif.frame(earthFrame);
             }
@@ -255,7 +390,7 @@ function mouseMoved() {
         }
 
         // right movement.
-        else if (nextMouseXPos > currentMouseXPos) {
+        else if (nextMouseXPos < currentMouseXPos) {
             if (earthGif.loaded()) {
                 if (currentEarthFrame === 0 && earthFrame === -1) {
                     currentEarthFrame = 99;
@@ -290,10 +425,10 @@ function mouseMoved() {
 
 }
 
-function starsGenerator(numberOfAsteroids) {
-    for (var a = 0; a < numberOfAsteroids; a++) {
-        var asteroid = new Star(random(widthOfTheUniverse * -3, widthOfTheUniverse * 2), random(0, windowHeight), random(4,10), random(1,2), random(8,10));
-        stars.push(asteroid);
+function starsGenerator(numberOfStars) {
+    for (var a = 0; a < numberOfStars; a++) {
+        var star = new Star(random(widthOfTheUniverse * -3, widthOfTheUniverse * 2), random(0, windowHeight), random(4,10), random(1,2), random(8,10));
+        stars.push(star);
     }
 }
 
@@ -349,6 +484,32 @@ function Sun(x) {
     };
 }
 
+function Earth(x) {
+    this.x = x;
+    this.gif = earthGif;
+
+    this.show = function () {
+        this.gif.pause();
+        image(this.gif, this.x, windowHeight / 2 - earthGif.height / 2);
+    };
+
+    this.getFrame = function () {
+        return this.gif.frame();
+    };
+
+    this.setFrame = function (x) {
+        this.gif.frame(x);
+    };
+
+    this.getX = function () {
+        return this.x;
+    }
+
+    this.setX = function (x) {
+        this.x += x;
+    }
+}
+
 function Moon(x) {
     this.x = x;
     this.velocity = 70;
@@ -377,7 +538,8 @@ function Jupiter(x) {
 
     this.show = function () {
         this.gif.pause();
-        image(this.gif, this.x, (windowHeight / 2) - (jupiterGif.height / 2));
+        image(this.gif, this.x, (windowHeight / 2) - (jupiterGif.height / 2 * 1.5));
+        // image(this.gif, this.x, (50));
     };
     this.moveLeft = function () {
         this.x -= this.velocity;
@@ -398,7 +560,7 @@ function Jupiter(x) {
 
 function Mars(x) {
     this.x = x;
-    this.velocity = 100;
+    this.velocity = 150;
     this.gif = marsGif;
 
     this.show = function () {
@@ -421,6 +583,33 @@ function Mars(x) {
         this.gif.frame(x);
     };
 
+}
+
+function Asteroid(x, y) {
+    this.x = x;
+    this.y = y;
+    this.velocity = random(50, 70);
+    this.movingVelocity = random(1, 10);
+    this.gif = possibleAsteroids[Math.floor(Math.random() * possibleAsteroids.length)];
+
+    this.show = function () {
+        image(this.gif, this.x, this.y);
+    };
+    this.moveLeft = function () {
+        this.x -= this.velocity;
+    };
+
+    this.moveRight = function () {
+        this.x += this.velocity;
+    };
+    
+    this.move = function () {
+        this.x += this.movingVelocity;
+    };
+
+    this.getX = function () {
+        return this.x;
+    };
 }
 
 function SmallJupiter(x) {
@@ -478,9 +667,14 @@ function mouseClicked() {
         secondScene = true;
         firstScene = false;
         buttonPressedSound.play();
-
     }
-
     // prevent default
     return false;
+}
+
+function asteroidGenerator(numberOfAsteroids) {
+    for (var s = 0; s < numberOfAsteroids; s++) {
+        var asteroid = new Asteroid(-100, random(0, windowHeight));
+        asteroids.push(asteroid);
+    }
 }
