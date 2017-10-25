@@ -18,10 +18,13 @@ var userIsMovingRight = false;
 var widthOfTheUniverse;
 var sunImage;
 var moonImage;
+var saturnImage;
 var theSunIsNotCreated = true;
 var theSun;
 var theMoonIsNotCreated = true;
 var theMoon;
+var saturnIsNotCreated = true;
+var thePlanetSaturn;
 var voiceOneHasNotBeenPlayed = true;
 var smallJupiterIsNotCreated = true;
 var thePlanetSmallJupiter;
@@ -29,7 +32,7 @@ var bleepSound;
 var bleepSoundHasNeverBeenPlayed = true;
 var firstScene = true;
 var secondScene = false;
-var buttonPressedSound;
+// var buttonPressedSound;
 var marsGif;
 var jupiterGif;
 var jupiterIsNotCreated = true;
@@ -65,17 +68,24 @@ var asteroid6xs3;
 var possibleAsteroids = [];
 var asteroids = [];
 var enoughAsteroidsAlready = false;
-
-
+var showFact1 = false;
+var showFact2 = false;
+var showFact3 = false;
+var showFact4 = false;
+var showFact5 = false;
+var fact1Button;
+var fact1ButtonIsNotCreated = true;
+var firstFact = true;
 
 function preload() {
     earthGif = loadGif('earth.gif');
     music = loadSound('blue_fields.mp3');
     sunImage = loadImage('sun.png');
     moonImage = loadImage('moon.png');
+    saturnImage = loadImage('saturn.png');
     voice1 = loadSound('voice_1.mp3');
     bleepSound = loadSound('bleep_sound.mp3');
-    buttonPressedSound = loadSound('button_pressed.mp3')
+    // buttonPressedSound = loadSound('button_pressed.mp3');
     marsGif = loadGif('mars.gif');
     jupiterGif = loadGif('jupiter_reversed_small.gif');
     asteroid1 = loadGif('asteroid_1_small.gif');
@@ -175,6 +185,10 @@ function draw() {
 
     if (firstScene) {
 
+        if (!fact1ButtonIsNotCreated) {
+            fact1Button.hide();
+        }
+
         if (theSunIsNotCreated) {
             theSun = new Sun(windowWidth / 2 - 300);
             theSunIsNotCreated = false;
@@ -259,36 +273,52 @@ function draw() {
 
         if (earthGif.loaded()) {
             if (voiceOneHasNotBeenPlayed) {
-                voice1.play();
+                // voice1.play();
                 voiceOneHasNotBeenPlayed = false;
             }
             if (fadingValueForEarth <= 255) {
                 if (frameCount % 5 === 0) {
-                    fadingValueForEarth += 4;
+                    fadingValueForEarth += 15;
                 }
             }
         }
 
-
         if (theEarth.getX() > (windowWidth / 2 - earthGif.width / 2) && earthGif.loaded()) {
-            theEarth.setX(-2);
+            theEarth.setX(-4);
         }
 
     } else if (secondScene) {
 
+        if (!fact1ButtonIsNotCreated) {
+            fact1Button.hide();
+        }
+
         push();
 
         if (!enoughAsteroidsAlready) {
-            for (var s = 0; s <= 100; s++) {
-                var asteroid = new Asteroid(random(-500, windowWidth + 500), random(100, windowHeight - 200));
+            for (var s = 0; s <= 10; s++) {
+                var asteroid = new Asteroid(random(-499, 0), random(100, windowHeight - 200));
                 asteroids.push(asteroid);
-                if (s === 100) {
+                if (s === 10) {
                     enoughAsteroidsAlready = true;
                 }
             }
         }
 
-        cursor(ARROW);
+        if (saturnIsNotCreated) {
+            thePlanetSaturn = new Saturn(windowWidth / 2);
+            saturnIsNotCreated = false;
+        }
+
+        tint(255, fadingValueForSecondScene);
+        thePlanetSaturn.show();
+
+        // Recycle saturn X position.
+        if (thePlanetSaturn.getX() > 8000) {
+            thePlanetSaturn.x = -500;
+        } else if (thePlanetSaturn.getX() < -8000) {
+            thePlanetSaturn.x = windowWidth + 500;
+        }
 
         if (jupiterIsNotCreated) {
             if (jupiterGif.loaded()) {
@@ -309,20 +339,24 @@ function draw() {
 
         for (var a = 0; a < asteroids.length; a++) {
             tint(255, fadingValueForSecondScene);
-            tint(255, fadingValueForSecondScene);
             asteroids[a].show();
             asteroids[a].move();
+            if (asteroids[a].mouseIsOver()) {
+                bleepSound.play();
+                secondScene = false;
+                if (firstFact) {
+                    showFact1 = true;
+                    firstFact = false;
+                }
+            }
         }
 
         tint(255, fadingValueForSecondScene);
         thePlanetMars.show();
 
-        // if (frameCount % 5 === 0) {
-        //     asteroidGenerator(random(-1, 1));
-        // }
-
         if (userIsMovingRight) {
             thePlanetMars.moveRight();
+            thePlanetSaturn.moveRight();
             // thePlanetJupiter.moveRight();
             for (var a = 0; a < asteroids.length; a++) {
                 asteroids[a].moveRight();
@@ -330,6 +364,7 @@ function draw() {
         }
         if (userIsMovingLeft) {
             thePlanetMars.moveLeft();
+            thePlanetSaturn.moveLeft();
             // thePlanetJupiter.moveLeft();
             for (var a = 0; a < asteroids.length; a++) {
                 asteroids[a].moveLeft();
@@ -351,14 +386,133 @@ function draw() {
 
         if (fadingValueForSecondScene <= 255) {
             if (frameCount % 5 === 0) {
-                fadingValueForSecondScene += 8;
+                fadingValueForSecondScene += 15;
             }
         }
 
         pop();
 
-    }
+    } else if (showFact1) {
 
+        for (var a = 0; a < asteroids.length; a++) {
+            asteroids.splice(a, 1);
+        }
+
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+
+        push();
+        // textFont(myCustomFont);
+        fill('#ffffff');
+        textSize(40);
+        var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
+        var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
+        var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        pop();
+
+        if (fact1ButtonIsNotCreated) {
+            fact1Button = createButton('OK');
+            fact1Button.size(130, 55);
+            fact1Button.style('font-size', '35px');
+            fact1Button.style('background-color', '#ffffff');
+            fact1Button.style('border-radius', '4px');
+            fact1Button.style('border', '2px solid #000000');
+            fact1Button.position((windowWidth / 2) + 200, (windowHeight / 2) + 200);
+            fact1Button.mousePressed(fact1OK);
+            fact1ButtonIsNotCreated = false;
+        }
+
+
+    } else if (showFact2) {
+
+        for (var a = 0; a < asteroids.length; a++) {
+            asteroids.splice(a, 1);
+        }
+
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+
+        push();
+        // textFont(myCustomFont);
+        fill('#ffffff');
+        textSize(40);
+        var myText1 = text('THIS IS FACT 2', 100, (windowHeight / 2) - 50);
+        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
+        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
+        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        pop();
+
+        fact1Button.show();
+        fact1Button.mousePressed(fact2OK);
+
+    } else if (showFact3) {
+
+        for (var a = 0; a < asteroids.length; a++) {
+            asteroids.splice(a, 1);
+        }
+
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+
+        push();
+        // textFont(myCustomFont);
+        fill('#ffffff');
+        textSize(40);
+        var myText1 = text('THIS IS FACT 3', 100, (windowHeight / 2) - 50);
+        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
+        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
+        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        pop();
+
+        fact1Button.show();
+        fact1Button.mousePressed(fact3OK);
+
+    } else if (showFact4) {
+
+        for (var a = 0; a < asteroids.length; a++) {
+            asteroids.splice(a, 1);
+        }
+
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+
+        push();
+        // textFont(myCustomFont);
+        fill('#ffffff');
+        textSize(40);
+        var myText1 = text('THIS IS FACT 4', 100, (windowHeight / 2) - 50);
+        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
+        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
+        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        pop();
+
+        fact1Button.show();
+        fact1Button.mousePressed(fact4OK);
+
+    } else if (showFact5) {
+
+        for (var a = 0; a < asteroids.length; a++) {
+            asteroids.splice(a, 1);
+        }
+
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+
+        push();
+        // textFont(myCustomFont);
+        fill('#ffffff');
+        textSize(40);
+        var myText1 = text('THIS IS FACT 5', 100, (windowHeight / 2) - 50);
+        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
+        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
+        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        pop();
+
+        fact1Button.show();
+        // fact1Button.setText('Try Again');
+        fact1Button.mousePressed(reset);
+
+    }
 
 }
 
@@ -442,7 +596,7 @@ function Star(x, y, r1, r2, p) {
 
     this.show = function () {
         push();
-        fill('#f6fce9');
+        fill('#ffffff');
         starMaker(this.x, this.y, this.r1, this.r2, this.p);
         pop();
     };
@@ -585,12 +739,34 @@ function Mars(x) {
 
 }
 
+function Saturn(x) {
+    this.x = x;
+    this.velocity = 70;
+
+    this.show = function () {
+        image(saturnImage, this.x, 225);
+    };
+
+    this.moveLeft = function () {
+        this.x += this.velocity;
+    };
+
+    this.moveRight = function () {
+        this.x -= this.velocity;
+    };
+
+    this.getX = function () {
+        return this.x;
+    };
+}
+
 function Asteroid(x, y) {
     this.x = x;
     this.y = y;
     this.velocity = random(50, 70);
-    this.movingVelocity = random(1, 10);
+    this.movingVelocity = random(5, 25);
     this.gif = possibleAsteroids[Math.floor(Math.random() * possibleAsteroids.length)];
+    this.touchArea = this.gif.width / 2;
 
     this.show = function () {
         image(this.gif, this.x, this.y);
@@ -610,6 +786,11 @@ function Asteroid(x, y) {
     this.getX = function () {
         return this.x;
     };
+
+    this.mouseIsOver = function () {
+        var d = dist(this.x + (this.gif.width / 2), this.y + (this.gif.height / 2), mouseX, mouseY);
+        return d < this.touchArea;
+    }
 }
 
 function SmallJupiter(x) {
@@ -666,15 +847,75 @@ function mouseClicked() {
     if (thePlanetSmallJupiter.mouseIsOver()) {
         secondScene = true;
         firstScene = false;
-        buttonPressedSound.play();
+        bleepSoundHasNeverBeenPlayed = true;
+        cursor(ARROW);
     }
     // prevent default
     return false;
 }
 
-function asteroidGenerator(numberOfAsteroids) {
-    for (var s = 0; s < numberOfAsteroids; s++) {
-        var asteroid = new Asteroid(-100, random(0, windowHeight));
-        asteroids.push(asteroid);
+function fact1OK() {
+    if (asteroids.length === 0) {
+        secondScene = true;
+        showFact1 = false;
+        showFact2 = true;
+        enoughAsteroidsAlready = false;
+    }
+}
+
+function fact2OK() {
+    if (asteroids.length === 0) {
+        secondScene = true;
+        showFact2 = false;
+        showFact3 = true;
+        enoughAsteroidsAlready = false;
+    }
+}
+
+function fact3OK() {
+    if (asteroids.length === 0) {
+        secondScene = true;
+        showFact3 = false;
+        showFact4 = true;
+        enoughAsteroidsAlready = false;
+    }
+}
+
+function fact4OK() {
+    if (asteroids.length === 0) {
+        secondScene = true;
+        showFact4 = false;
+        showFact5 = true;
+        enoughAsteroidsAlready = false;
+    }
+}
+
+function reset() {
+    if (asteroids.length === 0) {
+        fadingValueForEarth = 0;
+        fadingValueForSecondScene = 0;
+        theEarthIsNotCreated = true;
+        enoughStarsAlready = true;
+        userIsMovingLeft = false;
+        userIsMovingRight = false;
+        theSunIsNotCreated = true;
+        theMoonIsNotCreated = true;
+        saturnIsNotCreated = true;
+        voiceOneHasNotBeenPlayed = true;
+        smallJupiterIsNotCreated = true;
+        bleepSoundHasNeverBeenPlayed = true;
+        firstScene = true;
+        secondScene = false;
+        jupiterIsNotCreated = true;
+        marsIsNotCreated = true;
+        enoughAsteroidsAlready = false;
+        showFact1 = false;
+        showFact2 = false;
+        showFact3 = false;
+        showFact4 = false;
+        showFact5 = false;
+        fact1ButtonIsNotCreated = true;
+        firstFact = true;
+        fact1Button.hide();
     }
 }
