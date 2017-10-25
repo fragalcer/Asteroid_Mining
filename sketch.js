@@ -76,13 +76,23 @@ var showFact5 = false;
 var fact1Button;
 var fact1ButtonIsNotCreated = true;
 var firstFact = true;
+var fontUniversStandard;
+var fontUniversBold;
+var fontUniversLight;
+var fontUniversBlack;
+var asteroidBaseImage;
 
 function preload() {
+    fontUniversStandard = loadFont('UniversLTStd.otf');
+    fontUniversBold = loadFont('UniversLTStd-Bold.otf');
+    fontUniversLight = loadFont('Univers-light-normal.ttf');
+    fontUniversBlack = loadFont('UniversBlack.ttf');
     earthGif = loadGif('earth.gif');
     music = loadSound('blue_fields.mp3');
     sunImage = loadImage('sun.png');
     moonImage = loadImage('moon.png');
     saturnImage = loadImage('saturn.png');
+    asteroidBaseImage = loadImage('asteroid_base.png');
     voice1 = loadSound('voice_1.mp3');
     bleepSound = loadSound('bleep_sound.mp3');
     // buttonPressedSound = loadSound('button_pressed.mp3');
@@ -281,6 +291,20 @@ function draw() {
                     fadingValueForEarth += 15;
                 }
             }
+        } else {
+            push();
+            stroke('#2b2b2b');
+            strokeWeight(4);
+            fill('#ffffff');
+            textFont(fontUniversBold);
+            textSize(40);
+            text('THE ANU ASTEROID MINING MISSION', 100, (windowHeight / 2) - 50);
+            textFont(fontUniversLight);
+            textSize(30);
+            text('BY FRANCISCO GALLARDO', 100, (windowHeight / 2));
+            textSize(20);
+            text('LOADING...', 100, (windowHeight / 2) + 50);
+            pop();
         }
 
         if (theEarth.getX() > (windowWidth / 2 - earthGif.width / 2) && earthGif.loaded()) {
@@ -402,13 +426,14 @@ function draw() {
         userIsMovingRight = false;
 
         push();
-        // textFont(myCustomFont);
         fill('#ffffff');
         textSize(40);
-        var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
-        var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
-        var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (asteroidBaseImage.height + 150));
+        var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (asteroidBaseImage.height + 200));
+        var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (asteroidBaseImage.height + 250));
         pop();
+
+        image(asteroidBaseImage, (windowWidth / 2) - (asteroidBaseImage.width / 2), 100);
 
         if (fact1ButtonIsNotCreated) {
             fact1Button = createButton('OK');
@@ -509,7 +534,6 @@ function draw() {
         pop();
 
         fact1Button.show();
-        // fact1Button.setText('Try Again');
         fact1Button.mousePressed(reset);
 
     }
@@ -764,7 +788,7 @@ function Asteroid(x, y) {
     this.x = x;
     this.y = y;
     this.velocity = random(50, 70);
-    this.movingVelocity = random(5, 25);
+    this.movingVelocity = random(5, 15);
     this.gif = possibleAsteroids[Math.floor(Math.random() * possibleAsteroids.length)];
     this.touchArea = this.gif.width / 2;
 
