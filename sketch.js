@@ -95,7 +95,6 @@ function preload() {
     asteroidBaseImage = loadImage('asteroid_base.png');
     voice1 = loadSound('voice_1.mp3');
     bleepSound = loadSound('bleep_sound.mp3');
-    // buttonPressedSound = loadSound('button_pressed.mp3');
     marsGif = loadGif('mars.gif');
     jupiterGif = loadGif('jupiter_reversed_small.gif');
     asteroid1 = loadGif('asteroid_1_small.gif');
@@ -151,7 +150,7 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    // music.loop();
+    music.loop();
     earthXPos = windowWidth;
     widthOfTheUniverse = windowWidth;
     earthYPos = windowHeight;
@@ -283,7 +282,7 @@ function draw() {
 
         if (earthGif.loaded()) {
             if (voiceOneHasNotBeenPlayed) {
-                // voice1.play();
+                voice1.play();
                 voiceOneHasNotBeenPlayed = false;
             }
             if (fadingValueForEarth <= 255) {
@@ -346,7 +345,6 @@ function draw() {
 
         if (jupiterIsNotCreated) {
             if (jupiterGif.loaded()) {
-                // thePlanetJupiter = new Jupiter((windowWidth / 2) - (jupiterGif.width / 2));
                 thePlanetJupiter = new Jupiter(50);
                 jupiterIsNotCreated = false;
             }
