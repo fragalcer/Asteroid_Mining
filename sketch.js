@@ -32,7 +32,6 @@ var bleepSound;
 var bleepSoundHasNeverBeenPlayed = true;
 var firstScene = true;
 var secondScene = false;
-// var buttonPressedSound;
 var marsGif;
 var jupiterGif;
 var jupiterIsNotCreated = true;
@@ -81,6 +80,21 @@ var fontUniversBold;
 var fontUniversLight;
 var fontUniversBlack;
 var asteroidBaseImage;
+var voice2;
+var voice3;
+var voice4;
+var voice5;
+var voice6;
+var voice7;
+var voice3HasNeverBeenPlayed = true;
+var voice4HasNeverBeenPlayed = true;
+var voice5HasNeverBeenPlayed = true;
+var voice6HasNeverBeenPlayed = true;
+var voice7HasNeverBeenPlayed = true;
+var asteroidMineralsImage;
+var asteroidEconimicImage;
+var asteroidSustainabilityImage;
+var asteroidDestinyImage;
 
 function preload() {
     fontUniversStandard = loadFont('UniversLTStd.otf');
@@ -93,7 +107,17 @@ function preload() {
     moonImage = loadImage('moon.png');
     saturnImage = loadImage('saturn.png');
     asteroidBaseImage = loadImage('asteroid_base.png');
+    asteroidMineralsImage = loadImage('asteroid_minerals.jpg');
+    asteroidEconimicImage = loadImage('asteroid_economic.jpg');
+    asteroidSustainabilityImage = loadImage('asteroid_sustainability.jpg');
+    asteroidDestinyImage = loadImage('asteroid_destiny.jpg');
     voice1 = loadSound('voice_1.mp3');
+    voice2 = loadSound('voice_2.mp3');
+    voice3 = loadSound('voice_3.mp3');
+    voice4 = loadSound('voice_4.mp3');
+    voice5 = loadSound('voice_5.mp3');
+    voice6 = loadSound('voice_6.mp3');
+    voice7 = loadSound('voice_7.mp3');
     bleepSound = loadSound('bleep_sound.mp3');
     marsGif = loadGif('mars.gif');
     jupiterGif = loadGif('jupiter_reversed_small.gif');
@@ -193,6 +217,10 @@ function draw() {
     }
 
     if (firstScene) {
+
+        if (voice7.isPlaying()) {
+            voice7.stop();
+        }
 
         if (!fact1ButtonIsNotCreated) {
             fact1Button.hide();
@@ -300,7 +328,7 @@ function draw() {
             text('THE ANU ASTEROID MINING MISSION', 100, (windowHeight / 2) - 50);
             textFont(fontUniversLight);
             textSize(30);
-            text('BY FRANCISCO GALLARDO', 100, (windowHeight / 2));
+            text('An Interactive Experience by Francisco Gallardo', 100, (windowHeight / 2));
             textSize(20);
             text('LOADING...', 100, (windowHeight / 2) + 50);
             pop();
@@ -312,6 +340,10 @@ function draw() {
 
     } else if (secondScene) {
 
+        if (voice1.isPlaying()) {
+            voice1.stop();
+        }
+
         if (!fact1ButtonIsNotCreated) {
             fact1Button.hide();
         }
@@ -320,7 +352,7 @@ function draw() {
 
         if (!enoughAsteroidsAlready) {
             for (var s = 0; s <= 10; s++) {
-                var asteroid = new Asteroid(random(-499, 0), random(100, windowHeight - 200));
+                var asteroid = new Asteroid(random(-499, windowWidth), random(100, windowHeight / 2));
                 asteroids.push(asteroid);
                 if (s === 10) {
                     enoughAsteroidsAlready = true;
@@ -416,6 +448,10 @@ function draw() {
 
     } else if (showFact1) {
 
+        if (voice2.isPlaying()) {
+            voice2.stop();
+        }
+
         for (var a = 0; a < asteroids.length; a++) {
             asteroids.splice(a, 1);
         }
@@ -423,12 +459,21 @@ function draw() {
         userIsMovingLeft = false;
         userIsMovingRight = false;
 
+        if (voice3HasNeverBeenPlayed) {
+            voice3.play();
+            voice3HasNeverBeenPlayed = false;
+        }
+
         push();
         fill('#ffffff');
         textSize(40);
-        var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (asteroidBaseImage.height + 150));
-        var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (asteroidBaseImage.height + 200));
-        var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (asteroidBaseImage.height + 250));
+        textFont(fontUniversBold);
+        text('Asteroid mining is the exploitation of raw ', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 150));
+        text('materials from asteroids and other minor ', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 200));
+        text('planets, including near-earth objects.', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 250));
+        text('Most asteroids orbit between Mars and ', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 300));
+        text('Jupiter in a grouping known as the main', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 350));
+        text('asteroid belt.', (windowWidth / 2) - (asteroidBaseImage.width / 2), (asteroidBaseImage.height + 400));
         pop();
 
         image(asteroidBaseImage, (windowWidth / 2) - (asteroidBaseImage.width / 2), 100);
@@ -440,7 +485,7 @@ function draw() {
             fact1Button.style('background-color', '#ffffff');
             fact1Button.style('border-radius', '4px');
             fact1Button.style('border', '2px solid #000000');
-            fact1Button.position((windowWidth / 2) + 200, (windowHeight / 2) + 200);
+            fact1Button.position((windowWidth / 2) + (asteroidBaseImage.width /2) - fact1Button.width, windowHeight - 100);
             fact1Button.mousePressed(fact1OK);
             fact1ButtonIsNotCreated = false;
         }
@@ -448,6 +493,10 @@ function draw() {
 
     } else if (showFact2) {
 
+        if (voice3.isPlaying()) {
+            voice3.stop();
+        }
+
         for (var a = 0; a < asteroids.length; a++) {
             asteroids.splice(a, 1);
         }
@@ -455,21 +504,36 @@ function draw() {
         userIsMovingLeft = false;
         userIsMovingRight = false;
 
+        if (voice4HasNeverBeenPlayed) {
+            voice4.play();
+            voice4HasNeverBeenPlayed = false;
+        }
+
         push();
-        // textFont(myCustomFont);
         fill('#ffffff');
-        textSize(40);
-        var myText1 = text('THIS IS FACT 2', 100, (windowHeight / 2) - 50);
-        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
-        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
-        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        textSize(35);
+        textFont(fontUniversBold);
+        text('Minerals can be mined from an asteroid and used in ', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 100));
+        text('space for construction materials or taken back to', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 150));
+        text('Earth. Some of the minerals found in asteroids are:', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 200));
+        text('gold, iridium, silver, osmium, palladium, platinum,', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 250));
+        text('rhenium, rhodium, ruthenium, tungsten, iron, cobalt,', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 300));
+        text('manganese, titanium, nickel, and aluminium', (windowWidth / 2) - (asteroidMineralsImage.width / 2), (asteroidMineralsImage.height + 350));
         pop();
+
+        image(asteroidMineralsImage, (windowWidth / 2) - (asteroidMineralsImage.width / 2), 50);
+
+        fact1Button.position((windowWidth / 2) + (asteroidMineralsImage.width /2) - fact1Button.width, (asteroidMineralsImage.height + 375));
 
         fact1Button.show();
         fact1Button.mousePressed(fact2OK);
 
     } else if (showFact3) {
 
+        if (voice4.isPlaying()) {
+            voice4.stop();
+        }
+
         for (var a = 0; a < asteroids.length; a++) {
             asteroids.splice(a, 1);
         }
@@ -477,21 +541,36 @@ function draw() {
         userIsMovingLeft = false;
         userIsMovingRight = false;
 
+        if (voice5HasNeverBeenPlayed) {
+            voice5.play();
+            voice5HasNeverBeenPlayed = false;
+        }
+
         push();
-        // textFont(myCustomFont);
         fill('#ffffff');
-        textSize(40);
-        var myText1 = text('THIS IS FACT 3', 100, (windowHeight / 2) - 50);
-        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
-        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
-        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        textSize(35);
+        textFont(fontUniversBold);
+        text('Scientists have speculated that a relatively small ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 100));
+        text('metallic asteroid with a diameter of 1 mile contains ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 150));
+        text('more than $20 trillion worth of industrial and ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 200));
+        text('precious metals. The potential benefits to asteroid ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 250));
+        text('mining reach far beyond just profit, economic ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 300));
+        text('growth, and expanding Earth\'s resource base. ', (windowWidth / 2) - (asteroidEconimicImage.width / 2), (asteroidEconimicImage.height + 350));
         pop();
+
+        image(asteroidEconimicImage, (windowWidth / 2) - (asteroidEconimicImage.width / 2), 50);
+
+        fact1Button.position((windowWidth / 2) + (asteroidEconimicImage.width /2) - fact1Button.width, (asteroidEconimicImage.height + 375));
 
         fact1Button.show();
         fact1Button.mousePressed(fact3OK);
 
     } else if (showFact4) {
 
+        if (voice5.isPlaying()) {
+            voice5.stop();
+        }
+
         for (var a = 0; a < asteroids.length; a++) {
             asteroids.splice(a, 1);
         }
@@ -499,21 +578,36 @@ function draw() {
         userIsMovingLeft = false;
         userIsMovingRight = false;
 
+        if (voice6HasNeverBeenPlayed) {
+            voice6.play();
+            voice6HasNeverBeenPlayed = false;
+        }
+
         push();
-        // textFont(myCustomFont);
         fill('#ffffff');
-        textSize(40);
-        var myText1 = text('THIS IS FACT 4', 100, (windowHeight / 2) - 50);
-        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
-        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
-        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        textSize(33);
+        textFont(fontUniversBold);
+        text('While mining on Earth can be highly destructive to ', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 100));
+        text('natural habitats resulting in deforestation, soil', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 150));
+        text('erosion, chemical contamination, and the pollution of ', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 200));
+        text('groundwater mining in space doesn\'t damage any ', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 250));
+        text('natural habitats. Asteroid mining can improve our ', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 300));
+        text('environment, and the natural resources of the Earth.', (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), (asteroidSustainabilityImage.height + 350));
         pop();
+
+        image(asteroidSustainabilityImage, (windowWidth / 2) - (asteroidSustainabilityImage.width / 2), 50);
+
+        fact1Button.position((windowWidth / 2) + (asteroidSustainabilityImage.width /2) - fact1Button.width, (asteroidSustainabilityImage.height + 375));
 
         fact1Button.show();
         fact1Button.mousePressed(fact4OK);
 
     } else if (showFact5) {
 
+        if (voice6.isPlaying()) {
+            voice6.stop();
+        }
+
         for (var a = 0; a < asteroids.length; a++) {
             asteroids.splice(a, 1);
         }
@@ -521,15 +615,26 @@ function draw() {
         userIsMovingLeft = false;
         userIsMovingRight = false;
 
+        if (voice7HasNeverBeenPlayed) {
+            voice7.play();
+            voice7HasNeverBeenPlayed = false;
+        }
+
         push();
-        // textFont(myCustomFont);
         fill('#ffffff');
-        textSize(40);
-        var myText1 = text('THIS IS FACT 5', 100, (windowHeight / 2) - 50);
-        // var myText1 = text('ASTEROID MINING IS THE EXPLOITATION OF RAW', 100, (windowHeight / 2) - 50);
-        // var myText2 = text('MATERIALS FROM ASTEROIDS AND OTHER MINOR PLANETS, ', 100, (windowHeight / 2));
-        // var myText3 = text('INCLUDING NEAR-EARTH OBJECTS.', 100, (windowHeight / 2) + 50);
+        textSize(33);
+        textFont(fontUniversBold);
+        text('In the long run, being able to mine resources in ', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 100));
+        text('space will help humans create space-based', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 150));
+        text('communities, and explore deeper and deeper into the', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 200));
+        text('universe, eventually transitioning us away from an', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 250));
+        text('entirely Earth-based civilization. Asteroid Mining is', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 300));
+        text('possible, and is one of the ANU Grand Challenges.', (windowWidth / 2) - (asteroidDestinyImage.width / 2), (asteroidDestinyImage.height + 350));
         pop();
+
+        image(asteroidDestinyImage, (windowWidth / 2) - (asteroidDestinyImage.width / 2), 50);
+
+        fact1Button.position((windowWidth / 2) + (asteroidDestinyImage.width /2) - fact1Button.width, (asteroidDestinyImage.height + 375));
 
         fact1Button.show();
         fact1Button.mousePressed(reset);
@@ -871,6 +976,7 @@ function mouseClicked() {
         firstScene = false;
         bleepSoundHasNeverBeenPlayed = true;
         cursor(ARROW);
+        voice2.play();
     }
     // prevent default
     return false;
@@ -938,6 +1044,11 @@ function reset() {
         showFact5 = false;
         fact1ButtonIsNotCreated = true;
         firstFact = true;
+        voice3HasNeverBeenPlayed = true;
+        voice4HasNeverBeenPlayed = true;
+        voice5HasNeverBeenPlayed = true;
+        voice6HasNeverBeenPlayed = true;
+        voice7HasNeverBeenPlayed = true;
         fact1Button.hide();
     }
 }
