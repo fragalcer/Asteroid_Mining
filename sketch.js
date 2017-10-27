@@ -120,7 +120,7 @@ function preload() {
     voice7 = loadSound('voice_7.mp3');
     bleepSound = loadSound('bleep_sound.mp3');
     marsGif = loadGif('mars.gif');
-    jupiterGif = loadGif('jupiter_reversed_small.gif');
+    jupiterGif = loadGif('jupiter_reversed_medium.gif');
     asteroid1 = loadGif('asteroid_1_small.gif');
     asteroid2 = loadGif('asteroid_2_small.gif');
     asteroid3 = loadGif('asteroid_3_small.gif');
@@ -169,7 +169,6 @@ function preload() {
     possibleAsteroids.push(asteroid4xs3);
     possibleAsteroids.push(asteroid5xs3);
     possibleAsteroids.push(asteroid6xs3);
-
 }
 
 function setup() {
@@ -819,7 +818,7 @@ function Jupiter(x) {
 
     this.show = function () {
         this.gif.pause();
-        image(this.gif, this.x, (windowHeight / 2) - (jupiterGif.height / 2 * 1.5));
+        image(this.gif, this.x, (windowHeight / 2) - (jupiterGif.height / 2));
         // image(this.gif, this.x, (50));
     };
     this.moveLeft = function () {
