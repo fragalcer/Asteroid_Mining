@@ -40,3 +40,12 @@ and they have a licence of free usage for non-commercial purposes.
 
 12.- The voice off used in this project was obtained from NaturalReaders.com at https://www.naturalreaders.com
 under their online non-commercial purposes policy.
+
+13.- Asteroid Mining information resources:
+
+a) Asteroid Mining https://en.wikipedia.org/wiki/Asteroid_mining
+
+b) How asteroid mining could add trillions to the world economy -
+taken from TheWeek.com at http://theweek.com/articles/462830/how-asteroid-mining-could-add-trillions-world-economy
+
+c) Asteroid Mining The Future of Space Industry - ThoughtCatalyst YouTube channel: https://www.youtube.com/watch?v=HURjS_wM-QA
